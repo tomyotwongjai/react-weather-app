@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './index.css';
-import ReactDOM from 'react-dom';
 
 const api = {
   key: 'e902985907738b357b6a7c7a2651a108',
