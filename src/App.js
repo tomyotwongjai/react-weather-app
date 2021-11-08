@@ -1,74 +1,51 @@
-import React, { useState } from 'react';
-import './index.css';
+import React from 'react';
+import CityComponent from './Components/CityComponent/CityComponent';
+import WeatherComponent from './Components/WeatherComponent/WeatherComponent';
+import Loader from './Components/Loader/Loader';
+import axios from 'axios';
+import { useState } from 'react';
 
-const api = {
+const apiKeys = {
   key: 'e902985907738b357b6a7c7a2651a108',
   base: 'https://api.openweathermap.org/data/2.5/',
 };
 
 function App() {
+  const [city, updateCity] = useState('');
+  const [isLoading, setLoading] = useState(false);
+  const [weather, updateWeather] = useState();
   const [query, setQuery] = useState('');
-  const [weather, setWeather] = useState({});
+  const [error, setError] = useState('');
 
-  const search = (evt) => {
-    if (evt.key === 'Enter') {
-      fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
-        .then((res) => res.json())
-        .then((result) => {
-          setWeather(result);
-          setQuery('');
-          console.log(result);
-        });
-    }
+  const fetchWeather = async (e) => {
+    e.preventDefault();
+    await axios
+      .get(`${apiKeys.base}weather?q=${city}&units=metric&APPID=${apiKeys.key}`)
+      .then((response) => {
+        updateWeather(response.data);
+        setQuery('');
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+        updateWeather('');
+        setQuery('');
+        setError({ message: 'Not Found', query: query });
+      });
   };
-
-  function dateBuilder() {
-    let date = String(new window.Date());
-    date = date.slice(0, 15);
-    return `${date}`;
-  }
   return (
-    <>
-      <div
-        className={
-          typeof weather.main != 'undefined'
-            ? weather.main.temp > 16
-              ? 'app warm'
-              : 'app'
-            : 'app'
-        }
-      >
-        <main>
-          <div className='search-box'>
-            <input
-              type='text'
-              className='search-bar'
-              placeholder='Seach...'
-              onChange={(e) => setQuery(e.target.value)}
-              value={query}
-              onKeyPress={search}
-            />
-          </div>
-          {typeof weather.main != 'undefined' ? (
-            <div>
-              <div className='location-box'>
-                <div className='location'>
-                  {weather.name}, {weather.sys.country}
-                </div>
-                <div className='date'>{dateBuilder(new Date())}</div>
-              </div>
-              <div className='weather-box'>
-                <div className='temp'>{Math.round(weather.main.temp)}°</div>
-                <div className='weather'>{weather.weather[0].main}</div>
-              </div>
-            </div>
-          ) : (
-            ''
-          )}
-        </main>
-      </div>
-    </>
+    <div className='App'>
+      {weather ? (
+        <WeatherComponent weather={weather} />
+      ) : (
+        <>
+          <CityComponent updateCity={updateCity} fetchWeather={fetchWeather} />
+          <li id='error'>
+            {error.query} {error.message}
+          </li>
+        </>
+      )}
+    </div>
   );
 }
-
 export default App;
