@@ -12,7 +12,7 @@ const WeatherInfoComponent = (props) => {
   const { name, value } = props;
   return (
     <div>
-      <img src={WeatherInfoIcons[name]} />
+      <img alt='weatherinfo-logo' src={WeatherInfoIcons[name]} />
       <ul>
         <li>{value}</li>
         <li>{name}</li>
@@ -44,6 +44,7 @@ const WeatherComponent = (props) => {
           <h2>{Math.round(weather.main.temp)} C°</h2>
 
           <img
+            alt='weather-img'
             className='weather-logo'
             src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
           />

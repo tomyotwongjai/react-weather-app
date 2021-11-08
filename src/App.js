@@ -1,7 +1,6 @@
 import React from 'react';
 import CityComponent from './Components/CityComponent/CityComponent';
 import WeatherComponent from './Components/WeatherComponent/WeatherComponent';
-import Loader from './Components/Loader/Loader';
 import axios from 'axios';
 import { useState } from 'react';
 
@@ -12,7 +11,6 @@ const apiKeys = {
 
 function App() {
   const [city, updateCity] = useState('');
-  const [isLoading, setLoading] = useState(false);
   const [weather, updateWeather] = useState();
   const [query, setQuery] = useState('');
   const [error, setError] = useState('');
