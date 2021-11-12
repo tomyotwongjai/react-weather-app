@@ -29,7 +29,12 @@ const dateBuilder = () => {
 
 const WeatherComponent = (props) => {
   const { weather } = props;
-
+  const isDay = weather?.weather[0].icon?.includes('d');
+  const getTime = (timeStamp) => {
+    return `${new Date(timeStamp * 1000).getHours()} : ${new Date(
+      timeStamp * 1000
+    ).getMinutes()}`;
+  };
   return (
     <>
       <Header />
@@ -41,7 +46,11 @@ const WeatherComponent = (props) => {
           <i class='fas fa-redo fa-2x'></i>{' '}
         </button>
         <div className='card'>
-          <h2>{Math.round(weather.main.temp)} C°</h2>
+          <h2>
+            {' '}
+            <span>{`${Math.floor(weather?.main?.temp)}°C`}</span>
+            {`  |  ${weather?.weather[0].description}`}
+          </h2>
 
           <img
             alt='weather-img'
@@ -54,12 +63,15 @@ const WeatherComponent = (props) => {
           <div className='date'>{dateBuilder(new Date())}</div>
         </div>
         <div className='container'>
-          <WeatherInfoComponent name='sunrise' value='' />
+          <WeatherInfoComponent
+            name={isDay ? 'sunset' : 'sunrise'}
+            value={`${getTime(weather.sys[isDay ? 'sunset' : 'sunrise'])}`}
+          />
           <WeatherInfoComponent
             name={'humidity'}
-            value={weather?.main?.humidity}
+            value={weather.main.humidity}
           />
-          <WeatherInfoComponent name={'wind'} value={weather.wind.speed} />
+          <WeatherInfoComponent name={'wind'} value={weather?.wind?.speed} />
           <WeatherInfoComponent
             name={'pressure'}
             value={weather?.main?.pressure}

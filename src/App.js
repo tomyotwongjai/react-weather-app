@@ -3,15 +3,11 @@ import CityComponent from './Components/CityComponent/CityComponent';
 import WeatherComponent from './Components/WeatherComponent/WeatherComponent';
 import axios from 'axios';
 import { useState } from 'react';
-
-const apiKeys = {
-  key: 'e902985907738b357b6a7c7a2651a108',
-  base: 'https://api.openweathermap.org/data/2.5/',
-};
+import { apiKeys } from './apiKeys';
 
 function App() {
   const [city, updateCity] = useState('');
-  const [weather, updateWeather] = useState();
+  const [weather, updateWeather] = useState('');
   const [query, setQuery] = useState('');
   const [error, setError] = useState('');
 

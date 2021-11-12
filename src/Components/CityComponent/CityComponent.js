@@ -27,5 +27,4 @@ const CityComponent = (props) => {
     </Fragment>
   );
 };
-
 export default CityComponent;
