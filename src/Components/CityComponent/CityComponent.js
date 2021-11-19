@@ -3,7 +3,7 @@ import { Fragment } from 'react/cjs/react.production.min';
 import Header from '../Header/Header';
 import './CityComponent.css';
 
-const CityComponent = (props) => {
+function CityComponent(props) {
   const { updateCity, fetchWeather } = props;
   return (
     <Fragment>
@@ -26,5 +26,5 @@ const CityComponent = (props) => {
       </div>
     </Fragment>
   );
-};
+}
 export default CityComponent;

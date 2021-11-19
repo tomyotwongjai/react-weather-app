@@ -8,13 +8,13 @@ import { apiKeys } from './apiKeys';
 function App() {
   const [city, updateCity] = useState('');
   const [weather, updateWeather] = useState('');
-  const [query, setQuery] = useState('');
   const [error, setError] = useState('');
 
-  const fetchWeather = async (e) => {
+  /*
+  async function fetchWeather(e) {
     e.preventDefault();
     await axios
-      .get(`${apiKeys.base}weather?q=${city}&units=metric&APPID=${apiKeys.key}`)
+      (`${apiKeys.base}weather?q=${city}&units=metric&APPID=${apiKeys.key}`)
       .then((response) => {
         updateWeather(response.data);
         setQuery('');
@@ -26,7 +26,22 @@ function App() {
         setQuery('');
         setError({ message: 'Not Found', query: query });
       });
-  };
+  }
+  */
+
+  async function fetchWeather(e) {
+    e.preventDefault();
+    try {
+      const response = await axios(
+        `${apiKeys.base}weather?q=${city}&units=metric&APPID=${apiKeys.key}`
+      );
+      updateWeather(response.data);
+      console.log(response);
+    } catch (error) {
+      setError({ message: 'Not Found' });
+    }
+  }
+
   return (
     <div className='App'>
       {weather ? (
@@ -35,7 +50,8 @@ function App() {
         <>
           <CityComponent updateCity={updateCity} fetchWeather={fetchWeather} />
           <li id='error'>
-            {error.query} {error.message}
+            {error.data}
+            {error.message}
           </li>
         </>
       )}
